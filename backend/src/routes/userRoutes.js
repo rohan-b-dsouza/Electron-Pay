@@ -8,6 +8,8 @@ import { userUpdateValidation } from "../middlewares/userUpdateValidation.js";
 import { updateUser } from "../controllers/updateUser.js";
 import { searchUsers } from "../controllers/searchUsers.js";
 import { me } from "../controllers/me.js";
+import { getUser } from "../controllers/getUser.js";
+import { userValidation } from "../middlewares/userValidation.js";
 
 const userRouter = Router();
 
@@ -15,10 +17,12 @@ userRouter.post('/signup', userSignupValidation, signup);
 
 userRouter.post('/signin', userSigninValidation, signin);
 
-userRouter.put('/', authMiddleware, userUpdateValidation, updateUser);
+userRouter.put('/update', authMiddleware, userUpdateValidation, updateUser);
 
 userRouter.get('/search', authMiddleware, searchUsers);
 
 userRouter.get('/me', authMiddleware, me);
+
+userRouter.get('/:id', authMiddleware, userValidation, getUser);
 
 export default userRouter;

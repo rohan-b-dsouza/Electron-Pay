@@ -1,6 +1,14 @@
+import { useNavigate } from "react-router-dom";
 import SendMoneyButton from "./SendMoneyButton";
 
+const capitalize = (s)=> {
+  const firstChar = s[0].toUpperCase();
+  const rest = s.slice(1);
+  return firstChar + rest;
+}
+
 export function Users({ usersList, setFilter }) {
+  const navigate = useNavigate();
   return (
     <div className="flex flex-col">
       <div className="mt-8 ml-10 font-medium">Users</div>
@@ -23,14 +31,14 @@ export function Users({ usersList, setFilter }) {
                   <div className="flex justify-between items-center py-4 px-6">
                     <div className="flex items-center">
                       <div className="rounded-full text-white bg-[#1A3CFF] w-10 h-10 flex justify-center items-center ml-2 mr-4">
-                        <div>{user.firstName[0].toUpperCase()}</div>
+                        <div>{capitalize(user.firstName)[0]}</div>
                       </div>
-                      <div>{user.firstName}</div>
+                      <div>{capitalize(user.firstName)}</div>
                     </div>
-                    <SendMoneyButton userId={user._id}></SendMoneyButton>
+                    <SendMoneyButton onClick={()=>navigate(`/send-money/${user._id}`)}></SendMoneyButton>
                   </div>
                 </div>
-              );
+              ); 
             })
           )}
         </div>

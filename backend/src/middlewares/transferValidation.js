@@ -3,7 +3,7 @@ import mongoose from 'mongoose';
 
 export const transferValidation = (req, res, next)=> {
     const transferSchema = zod.object({
-        toUserId : zod.string().trim().refine(mongoose.Types.ObjectId.isValid, { message: "Invalid User Id"}),
+        toUserId : zod.string().trim().refine(mongoose.Types.ObjectId.isValid, { message: "Invalid Recipient Id"}),
         amount: zod.number().positive("Amount must be greater than 0")
     });
     const result = transferSchema.safeParse(req.body);

@@ -10,21 +10,22 @@ export const transfer = async (req, res)=> {
         if (toUserId === req.userId) {
             await session.abortTransaction();
             return res.status(400).json({
-                message: "Cannot transfer to your own account"
+                errors: {account: "Cannot transfer to your own account"}
             });
         }
         const fromAccount = await Account.findOne({ userId: req.userId}).session(session);
         if (!fromAccount) {
             await session.abortTransaction();
             return res.status(404).json({
-                message: "Your account doesn't exist"
+                errors: {account: "Your account doesn't exist"}
             });
         }
-        const toAccount = await Account.findOne({ userId: toUserId} ).session(session);
+        {console.log(toUserId)}
+        const toAccount = await Account.findOne({ userId: new mongoose.Types.ObjectId(toUserId)} ).session(session);
         if (!toAccount) {
             await session.abortTransaction();
             return res.status(404).json({
-                message: "Payee account not found"
+                errors: {account: "Payee account not found"}
             });
         }
         const result = await Account.updateOne(
@@ -35,7 +36,7 @@ export const transfer = async (req, res)=> {
         if (!result.modifiedCount) {
             await session.abortTransaction();
             return res.status(400).json({
-                message: "Transaction failed due to insufficient balance"
+                errors: {account: "Transaction failed due to insufficient balance"}
             });
         }
         await Account.findByIdAndUpdate(

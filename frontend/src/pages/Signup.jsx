@@ -43,7 +43,7 @@ export default function Signup() {
                         }
                     } error={errors.email}></InputBox>
 
-                    <InputBox label="Password" placeholder="minimum 6 characters" type="password" onChange={
+                    <InputBox label="Password" placeholder="Use a mix of letters, numbers & symbols" type="password" onChange={
                         (e)=> {
                             setPassword(e.target.value);
                             setErrors((prev)=> ({...prev, password: ""}));

@@ -4,40 +4,46 @@ import Topbar from "../components/Topbar"
 import { Users } from "../components/Users"
 import { useNavigate } from "react-router-dom"
 import axios from "axios"
+import EditProfile from "../components/EditProfile"
 
 export default function DashBoard() {
     const navigate = useNavigate();
     const [firstName, setFirstName] = useState("");
+    const [lastName, setLastName] = useState("");
+    const [email, setEmail] = useState("");
     const [balance, setBalance] = useState(0);
     const [usersList, setUsersList] = useState([]);
     const [filter, setFilter] = useState("");
-    useEffect(()=> {
+    const [showModal, setShowModal] = useState(false);
 
-        const token = localStorage.getItem("token");
-        const config = {
-            headers: {
-                Authorization: `Bearer ${token}`
+
+    const token = localStorage.getItem("token");
+    const config = {
+        headers: {
+            Authorization: `Bearer ${token}`
+        }
+    }
+    const fetchData = async()=> {
+        try {
+            const [meRes, balanceRes] = await Promise.all([
+                axios.get('http://localhost:3000/api/v1/user/me', config),
+                axios.get('http://localhost:3000/api/v1/user/account/balance', config),
+            ]);
+            setFirstName(meRes.data.firstName);
+            setLastName(meRes.data.lastName);
+            setEmail(meRes.data.email);
+            setBalance(balanceRes.data.balance);
+        }
+        catch(err) {
+            const status = err.response?.status;
+            if (err.response?.status == 401 || err.response?.status == 404) {
+                localStorage.removeItem("token");
+                navigate('/signin');
+                return;
             }
         }
-        const fetchData = async()=> {
-            try {
-                const [meRes, balanceRes] = await Promise.all([
-                    axios.get('http://localhost:3000/api/v1/user/me', config),
-                    axios.get('http://localhost:3000/api/v1/user/account/balance', config),
-                ]);
-                setFirstName(meRes.data.firstName);
-                setBalance(balanceRes.data.balance);
-                setUsersList(searchRes.data.users);
-            }
-            catch(err) {
-                const status = err.response?.status;
-                if (err.response?.status == 401 || err.response?.status == 404) {
-                    localStorage.removeItem("token");
-                    navigate('/signin');
-                    return;
-                }
-            }
-        }
+    }
+    useEffect(()=> {
         fetchData();
     }, []);
     useEffect(()=> {
@@ -65,10 +71,17 @@ export default function DashBoard() {
 
     }, [filter]);
     return (
-        <div className="bg-[#F0F2F5] h-screen">
-            <Topbar firstName={firstName} initials={firstName[0]}></Topbar>
-            <Balance balance={balance / 100}></Balance>
-            <Users usersList={usersList} setFilter={setFilter}></Users>
-        </div>
+        <>
+            <div className={`bg-[#F0F2F5] h-screen`}>
+                <Topbar firstName={firstName} initials={firstName[0]} email={email} lastName={lastName} onEditProfile={()=>setShowModal(showModal=>!showModal)}></Topbar>
+                <Balance balance={balance / 100}></Balance>
+                <Users usersList={usersList} setFilter={setFilter}></Users>
+                {
+                    showModal && (
+                        <EditProfile onClose={()=>setShowModal(false)} onEdit={fetchData}></EditProfile>
+                    )
+                }
+            </div>
+        </>
     )
 }

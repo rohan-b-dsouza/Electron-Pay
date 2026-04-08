@@ -10,7 +10,7 @@ export default function Signin() {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [errors, setErrors] = useState("");
+  const [errors, setErrors] = useState({});
   return (
     <div className="flex justify-center items-center h-screen bg-[#F0F2F5]">
       <div className="flex flex-col justify-center w-full max-w-md rounded-md p-9 space-y-7 bg-[#FFFFFF] shadow-sm">
@@ -21,7 +21,7 @@ export default function Signin() {
         <div className="space-y-4">
           <InputBox
             label="Email"
-            placeholder="example@gmail.com"
+            placeholder="Enter your email"
             type="email"
             onChange={(e) => {
               setEmail(e.target.value);
@@ -29,38 +29,44 @@ export default function Signin() {
             }}
             error={errors.email}
           ></InputBox>
-
-          <InputBox
-            label="Password"
-            placeholder="minimum 6 characters"
-            type="password"
-            onChange={(e) => {
-              setPassword(e.target.value);
-              setErrors((prev) => ({ ...prev, password: "" }));
-            }}
-            error={errors.password}
-          ></InputBox>
+          <div>
+            <InputBox
+              label="Password"
+              placeholder="Enter your password"
+              type="password"
+              onChange={(e) => {
+                setPassword(e.target.value);
+                setErrors((prev) => ({ ...prev, password: "" }));
+              }}
+              error={errors.password}
+            ></InputBox>
+            <div className="text-sm text-gray-600 space-y-1">
+            </div>
+          </div>
         </div>
         <div className="space-y-4">
-          <Button content={"Login"} onClick={
-            async ()=> {
-                try {
-                    const response = await axios.post('http://localhost:3000/api/v1/user/signin', {
-                        email, 
-                        password
-                    });
-                    setErrors({});
-                    localStorage.setItem("token", response.data.token);
-                    navigate('/dashboard');
+          <Button
+            content={"Login"}
+            onClick={async () => {
+              try {
+                const response = await axios.post(
+                  "http://localhost:3000/api/v1/user/signin",
+                  {
+                    email,
+                    password,
+                  },
+                );
+                setErrors({});
+                localStorage.setItem("token", response.data.token);
+                navigate("/dashboard");
+              } catch (err) {
+                const backendErrors = err.response?.data?.errors;
+                if (backendErrors) {
+                  setErrors(backendErrors);
                 }
-                catch(err) {
-                    const backendErrors = err.response?.data?.errors;
-                    if (backendErrors) {
-                        setErrors(backendErrors);
-                    }
-                }
-            }
-          }></Button>
+              }
+            }}
+          ></Button>
           <AuthRedirect
             question={"Don't have an account?"}
             redirect={"Signup"}

@@ -9,7 +9,7 @@ export const signin = async (req, res)=> {
         if (!existingUser) {
             return res.status(400).json({
                 errors: {
-                    email: "Email doesn't exist"
+                    email: "Invalid email or password"
                 }
             });
         }
@@ -18,7 +18,7 @@ export const signin = async (req, res)=> {
         if (!isPasswordCorrect) {
             return res.status(401).json({
                 errors: {
-                    password: "Password entered is incorrect"
+                    password: "Invalid email or password"
                 }
             });
         }
