@@ -26,7 +26,7 @@ export default function Topbar({ firstName, initials, email, onEditProfile }) {
             navigate("/signup");
           }}
         >
-          ElectronPay
+          Electron Pay
         </div>
       </div>
       <div className="font-normal flex items-center">

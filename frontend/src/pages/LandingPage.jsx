@@ -10,7 +10,7 @@ export default function LandingPage() {
       <div className="bg-[#ffffff] border-b border-[#E8E7E2] px-6 h-15 flex items-center justify-between  sticky top-0 z-50">
         <div className="flex items-center gap-2">
           <div className="w-2.5 h-2.5 rounded-full bg-[#1A3CFF]"></div>
-          <span className="text-base font-medium text-[#0B0F1A]">ElectronPay</span>
+          <span className="text-base font-medium text-[#0B0F1A]">Electron Pay</span>
         </div>
         <div className="flex items-center gap-3">
           <button
@@ -39,7 +39,7 @@ export default function LandingPage() {
             Send money instantly, without the hassle
           </h1>
           <p className="text-base text-[#8A8F9E] leading-relaxed mb-8">
-            ElectronPay makes transferring money as easy as sending a message. Fast, secure, and completely free.
+            Electron Pay makes transferring money as easy as sending a message. Fast, secure, and completely free.
           </p>
           <div className="flex gap-3 flex-wrap">
             <button
@@ -86,7 +86,7 @@ export default function LandingPage() {
                 </svg>
               ),
               title: "Instant transfers",
-              desc: "Send money in under a second to anyone on ElectronPay.",
+              desc: "Send money in under a second to anyone on Electron Pay.",
             },
             {
               bg: "bg-[#D4F5E9]",
@@ -166,9 +166,9 @@ export default function LandingPage() {
       <div className="bg-[#0B0F1A] border-t border-[#3D4155] px-6 py-5 flex justify-between items-center flex-wrap gap-3">
         <div className="flex items-center gap-2">
           <div className="w-2 h-2 rounded-full bg-[#1A3CFF]"></div>
-          <span className="text-sm font-medium text-white">ElectronPay</span>
+          <span className="text-sm font-medium text-white">Electron Pay</span>
         </div>
-        <div className="text-xs text-[#8A8F9E]">© 2026 ElectronPay. All rights reserved.</div>
+        <div className="text-xs text-[#8A8F9E]">© 2026 Electron Pay. All rights reserved.</div>
       </div>
 
     </div>
