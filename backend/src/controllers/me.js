@@ -2,16 +2,17 @@ import User from "../models/User.js"
 
 export const me = async (req, res)=> {
     try {
-        const user = await User.findById(req.userId).select("email firstName lastName");
+        const user = await User.findById(req.userId).select("email username firstName lastName");
         console.log(user);
         if (!user) {
             return res.status(404).json({
                 message: "User not found"
             });
         }
-        const {email, firstName, lastName} = user;
+        const {email, username, firstName, lastName} = user;
         return res.status(200).json({
             email,
+            username, 
             firstName,
             lastName
         });

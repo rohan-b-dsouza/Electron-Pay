@@ -7,16 +7,13 @@ export const searchUsers = async (req, res) => {
       return res.status(200).json({
         users: await User.find({
           _id: { $ne: req.userId },
-        }).select("email firstName lastName _id"),
+        }).select("email username firstName lastName _id"),
       });
     }
     const users = await User.find({
       _id: { $ne: req.userId },
-      $or: [
-        { firstName: { $regex: "^" + filter, $options: "i" } },
-        { lastName: { $regex: "^" + filter, $options: "i" } },
-      ],
-    }).select("email firstName lastName _id");
+      username: { $regex: "^" + filter, $options: "i" }
+    }).select("email username firstName lastName _id");
     return res.status(200).json({ users });
   } catch (error) {
     console.log(error);

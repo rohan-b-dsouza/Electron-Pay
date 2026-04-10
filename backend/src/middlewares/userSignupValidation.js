@@ -4,12 +4,21 @@ export const userSignupValidation = (req, res, next) => {
     email: zod
       .email("Email entered is invalid")
       .min(1, "Email is required")
+      .max(100, "Email is too long")
       .trim(),
+    username: zod
+      .string()
+      .min(3, "Username must be atleast 3 characters")
+      .max(30, "Username too long")
+      .regex(
+        /^[a-zA-Z0-9_]+$/,
+        "Username can only contain letters, numbers and underscores",
+      ),
     password: zod
       .string()
       .regex(
-        /^(?=.*[a-zA-Z])(?=.*\d).{8,}$/,
-        "Must contain a mix of letters, numbers & symbols",
+        /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&]).{8,}$/,
+        "Must contain a mix of letters, numbers & symbols (min 8 characters)",
       ),
     firstName: zod
       .string()

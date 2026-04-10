@@ -17,7 +17,7 @@ export default function SendMoney() {
   const { toUserId } = useParams();
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
-
+  const [username, setUsername] = useState("");
   useEffect(() => {
     const getUserData = async () => {
       try {
@@ -31,10 +31,17 @@ export default function SendMoney() {
         );
         setFirstName(response.data.firstName);
         setLastName(response.data.lastName);
+        setUsername(response.data.username);
       } catch (err) {
         const status = err.response?.status;
+        console.log("12332");
+        console.log(status);
         if (status == 404 || status == 500) {
           navigate("/dashboard");
+          return;
+        }
+        else {
+          navigate("/signin");
           return;
         }
       }
@@ -60,7 +67,6 @@ export default function SendMoney() {
           headers: { Authorization: `Bearer ` + localStorage.getItem("token") },
         },
       );
-      // await new Promise((resolve)=> setTimeout(resolve, 1200));
       setSuccess(true);
     } catch (err) {
       setLoading(false);
@@ -72,11 +78,11 @@ export default function SendMoney() {
   }
 
   return (
-    <div className="flex justify-center items-center h-screen bg-[#F0F2F5]">
+    <div className="flex justify-center items-center min-h-screen bg-[#F0F2F5] px-5">
       {success ? (
         <div>
-          <div className="bg-[#ffffff] max-w-md w-full flex flex-col  shadow-sm rounded-lg p-15 justify-center items-center space-y-3">
-            <div className="w-13 h-13 bg-[#D4F5E9] rounded-full shadow-sm display items-center flex justify-center">
+          <div className="bg-[#ffffff] max-w-lg w-full flex flex-col  shadow-sm rounded-xl justify-center items-center space-y-4 py-12 sm:py-15 sm:px-12 px-6">
+            <div className="w-16 h-16 bg-[#D4F5E9] rounded-full shadow-sm display items-center flex justify-center">
               <svg
                 width="26"
                 height="26"
@@ -90,16 +96,20 @@ export default function SendMoney() {
                 <polyline points="20 6 9 17 4 12" />
               </svg>
             </div>
-            <div className="text-lg text-[#0B0F1A] font-semibold ">
-              Transfer Successful
+            <div className="text-2xl text-[#0B0F1A] font-semibold">
+              Payment Successful
             </div>
-            <div className="text-sm text-[#8A8F9E]">
-              Rs. {amount} sent to {capitalize(firstName)}{" "}
-              {capitalize(lastName)}
+            <div className="text-2xl text-[#8A8F9E]">
+              {amount.toLocaleString("en-IN", {
+                style: "currency",
+                currency: "INR",
+              })}
             </div>
-            <div className=""></div>
+            <div className="text-[#8A8F9E]">{"Paid to"}</div>
+            <div className="">{capitalize(firstName)} {capitalize(lastName)}</div>
+            <div className="text-sm text-[#7d7d7e] break-all">User ID: {username}{"@zepay"}</div>
             <button
-              className="text-sm text-[#ffffff] bg-[#1A3CFF] font-semibold py-2.5 rounded-md w-full cursor-pointer hover:bg-[#0A1FA8]"
+              className="text-sm text-[#ffffff] bg-[#1A3CFF] font-semibold py-3.5 rounded-md w-full cursor-pointer hover:bg-[#0A1FA8]"
               onClick={() => navigate("/dashboard", { replace: true })}
             >
               Back to dashboard
@@ -107,10 +117,11 @@ export default function SendMoney() {
           </div>
         </div>
       ) : (
-        <div className="bg-[#ffffff] max-w-md w-full flex flex-col  shadow-sm rounded-lg">
+        <div className="bg-[#ffffff] max-w-lg w-full flex flex-col  shadow-sm rounded-lg">
           <div className="divide-y divide-gray-200">
-            <div className="flex items-center px-5 py-5">
-              <svg onClick={()=>navigate('/dashboard')}
+            <div className="flex items-center px-7 py-5">
+              <svg
+                onClick={() => navigate("/dashboard")}
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
                 viewBox="0 0 24 24"
@@ -126,7 +137,7 @@ export default function SendMoney() {
               </svg>
               <div className="text-[#8A8F9E] text-sm pl-2">Send Money</div>
             </div>
-            <div className="flex items-center py-7 px-5">
+            <div className="flex items-center py-7 px-7">
               <div className="rounded-full text-white bg-[#1A3CFF] w-10 h-10 flex justify-center items-center ml-2 mr-4 ">
                 <div>{capitalize(firstName)[0]}</div>
               </div>
@@ -138,7 +149,7 @@ export default function SendMoney() {
               </div>
             </div>
 
-            <div className="py-7 px-7 space-y-5">
+            <div className="py-7 px-9 space-y-5">
               <InputBox
                 label="Amount (in Rs)"
                 placeholder="0.00"
@@ -150,7 +161,7 @@ export default function SendMoney() {
                 error={errors.amount}
               ></InputBox>
               {errors.account && (
-                <p className="text-[#CF1C1C] text-xs" mt-1>
+                <p className="text-[#CF1C1C] text-xs">
                   {errors.account}
                 </p>
               )}
@@ -167,7 +178,7 @@ export default function SendMoney() {
                 </div>
               </button>
 
-              <div className="text-[#050505] font-normal text-sm flex items-center flex-col">
+              <div className="text-[#050505] font-normal sm:text-sm flex items-center flex-col text-xs">
                 Transfers are instant and cannot be reversed
               </div>
             </div>

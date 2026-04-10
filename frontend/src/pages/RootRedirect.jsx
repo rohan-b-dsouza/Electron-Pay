@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Navigate} from "react-router-dom";
 import axios from 'axios';
+import LandingPage from "./LandingPage";
 
 export default function RootRedirect() {
     const [loading, setLoading] = useState(true);
@@ -32,5 +33,5 @@ export default function RootRedirect() {
     if (loading) return (
         <div>Loading...</div>
     )
-    return authenticated ? <Navigate to="/dashboard"/> : <Navigate to="/signin"/>
+    return authenticated ? <Navigate to="/dashboard"/> : <Navigate to="/landing"/>
 }

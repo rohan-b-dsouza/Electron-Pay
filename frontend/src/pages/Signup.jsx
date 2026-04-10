@@ -4,80 +4,115 @@ import Heading from "../components/Heading";
 import InputBox from "../components/InputBox";
 import SubHeading from "../components/SubHeading";
 import { useState } from "react";
-import axios from 'axios';
-import {useNavigate} from 'react-router-dom';
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 export default function Signup() {
-    const [firstName, setFirstName] = useState("");
-    const [lastName, setLastName] = useState("");
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-    const [errors, setErrors] = useState({});
-    const navigate = useNavigate();
-    return (
-        <div className="flex justify-center items-center h-screen bg-[#F0F2F5]">
-            <div className="flex flex-col justify-center w-full max-w-md rounded-md p-9 space-y-5 bg-[#FFFFFF] shadow-sm">
-                <div className="flex flex-col items-center justify-center space-y-2" >
-                    <Heading heading={"Sign Up"}></Heading>
-                    <SubHeading subheading={"Create your account to get started"}></SubHeading>
-                </div>
-
-                <div className="space-y-3">
-                    <InputBox label="First Name" placeholder="Alex" type="text" onChange={
-                        (e)=> {
-                            setFirstName(e.target.value);
-                            setErrors((prev)=> ({...prev, firstName: ""}))
-                        } 
-                    } error={errors.firstName}></InputBox>
-                    <InputBox label="Last Name" placeholder="James" type="text" onChange={
-                        (e)=> {
-                            setLastName(e.target.value);
-                            setErrors((prev)=> ({...prev, lastName: ""}));
-                        }
-                    } error={errors.lastName}></InputBox>
-
-                    <InputBox label="Email" placeholder="example@gmail.com" type="email" onChange={
-                        (e)=> {
-                            setEmail(e.target.value);
-                            setErrors((prev)=> ({...prev, email: ""}));
-                        }
-                    } error={errors.email}></InputBox>
-
-                    <InputBox label="Password" placeholder="Use a mix of letters, numbers & symbols" type="password" onChange={
-                        (e)=> {
-                            setPassword(e.target.value);
-                            setErrors((prev)=> ({...prev, password: ""}));
-                        }
-                    } error={errors.password}></InputBox>
-                </div>
-                <div className="space-y-3">
-                    <Button content={"Create Account"} onClick={
-                        async ()=> {
-                            try {
-                                const response = await axios.post("http://localhost:3000/api/v1/user/signup", {
-                                    firstName,
-                                    lastName,
-                                    email, 
-                                    password
-                                });
-                                setErrors({});
-                                localStorage.setItem("token", response.data.token);
-                                navigate("/dashboard");
-                                
-                            }
-                            catch(err) {
-                                const backendErrors = err.response?.data?.errors;
-                                if (backendErrors) {
-                                    setErrors(backendErrors);
-                                }
-                            }
-                        }
-                    }></Button>
-                    <AuthRedirect question={"Already have an account?"} redirect={"Signin"} onClick={ 
-                        ()=> navigate("/signin")
-                    }></AuthRedirect>
-                </div>
-            </div>
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [errors, setErrors] = useState({});
+  const navigate = useNavigate();
+  return (
+    <div className="flex justify-center items-center min-h-screen bg-[#F0F2F5] px-5">
+      <div className="flex flex-col justify-center w-full sm:max-w-md rounded-md p-6 sm:p-9 space-y-5 bg-[#FFFFFF] shadow-sm">
+        <div className="flex flex-col items-center justify-center space-y-2">
+          <Heading heading={"Sign Up"}></Heading>
+          <SubHeading
+            subheading={"Create your account to get started"}
+          ></SubHeading>
         </div>
-    )
+
+        <div className="space-y-3">
+          <InputBox
+            label="First Name"
+            placeholder="Alex"
+            type="text"
+            onChange={(e) => {
+              setFirstName(e.target.value);
+              setErrors((prev) => ({ ...prev, firstName: "" }));
+            }}
+            error={errors.firstName}
+          ></InputBox>
+          <InputBox
+            label="Last Name"
+            placeholder="James"
+            type="text"
+            onChange={(e) => {
+              setLastName(e.target.value);
+              setErrors((prev) => ({ ...prev, lastName: "" }));
+            }}
+            error={errors.lastName}
+          ></InputBox>
+
+          <InputBox
+            label="Username"
+            placeholder="Only Letters, numbers and underscores"
+            type="text"
+            onChange={(e) => {
+              setUsername(e.target.value);
+              setErrors((prev) => ({ ...prev, username: "" }));
+            }}
+            error={errors.username}
+          ></InputBox>
+          <InputBox
+            label="Email"
+            placeholder="example@gmail.com"
+            type="email"
+            onChange={(e) => {
+              setEmail(e.target.value);
+              setErrors((prev) => ({ ...prev, email: "" }));
+            }}
+            error={errors.email}
+          ></InputBox>
+
+          <InputBox
+            label="Password"
+            placeholder="Use a mix of letters, numbers and symbols"
+            type="password"
+            onChange={(e) => {
+              setPassword(e.target.value);
+              setErrors((prev) => ({ ...prev, password: "" }));
+            }}
+            error={errors.password}
+          ></InputBox>
+        </div>
+        <div className="space-y-3">
+          <Button
+            content={"Create Account"}
+            onClick={async () => {
+              try {
+                const response = await axios.post(
+                  "http://localhost:3000/api/v1/user/signup",
+                  {
+                    firstName,
+                    lastName,
+                    username,
+                    email,
+                    password,
+                  },
+                );
+                setErrors({});
+                localStorage.setItem("token", response.data.token);
+                navigate("/dashboard");
+              } catch (err) {
+                console.log("676767676");
+                const backendErrors = err.response?.data?.errors;
+                if (backendErrors) {
+                  setErrors(backendErrors);
+                }
+              }
+            }}
+          ></Button>
+          <AuthRedirect
+            question={"Already have an account?"}
+            redirect={"Signin"}
+            onClick={() => navigate("/signin")}
+          ></AuthRedirect>
+        </div>
+      </div>
+    </div>
+  );
 }

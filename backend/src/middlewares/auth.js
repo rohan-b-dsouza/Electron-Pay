@@ -5,7 +5,6 @@ export const authMiddleware = (req, res, next)=> {
     console.log(authHeader);
 
     if (!authHeader || !authHeader.startsWith("Bearer ")) {
-        console.log("123321");
         return res.status(401).json({
             message: "Unauthorized"
         })
@@ -17,7 +16,6 @@ export const authMiddleware = (req, res, next)=> {
         next();
     }
     catch(error) {
-        console.log("123321");
         return res.status(401).json({
             message: "Invalid or expired token"
         });

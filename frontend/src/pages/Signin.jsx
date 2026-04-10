@@ -12,7 +12,7 @@ export default function Signin() {
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState({});
   return (
-    <div className="flex justify-center items-center h-screen bg-[#F0F2F5]">
+    <div className="flex justify-center items-center h-screen bg-[#F0F2F5] px-5">
       <div className="flex flex-col justify-center w-full max-w-md rounded-md p-9 space-y-7 bg-[#FFFFFF] shadow-sm">
         <div className="flex flex-col items-center justify-center space-y-2">
           <Heading heading={"Sign in"}></Heading>

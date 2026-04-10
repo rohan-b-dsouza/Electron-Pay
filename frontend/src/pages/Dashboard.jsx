@@ -32,6 +32,7 @@ export default function DashBoard() {
             setFirstName(meRes.data.firstName);
             setLastName(meRes.data.lastName);
             setEmail(meRes.data.email);
+            console.log(balanceRes.data);
             setBalance(balanceRes.data.balance);
         }
         catch(err) {
@@ -72,10 +73,12 @@ export default function DashBoard() {
     }, [filter]);
     return (
         <>
-            <div className={`bg-[#F0F2F5] h-screen`}>
+            <div className={`bg-[#F0F2F5] min-h-screen`}>
                 <Topbar firstName={firstName} initials={firstName[0]} email={email} lastName={lastName} onEditProfile={()=>setShowModal(showModal=>!showModal)}></Topbar>
-                <Balance balance={balance / 100}></Balance>
-                <Users usersList={usersList} setFilter={setFilter}></Users>
+                <div className="px-10">
+                    <Balance balance={balance / 100}></Balance>
+                    <Users usersList={usersList} setFilter={setFilter}></Users>
+                </div>
                 {
                     showModal && (
                         <EditProfile onClose={()=>setShowModal(false)} onEdit={fetchData}></EditProfile>

@@ -17,7 +17,7 @@ export default function Topbar({ firstName, initials, email, onEditProfile }) {
   };
 
   return (
-    <div className="flex justify-between text-[#0B0F1A] bg-[#ffffff] p-3 items-center border-b border-[#E8E7E2] text-base relative">
+    <div className="flex justify-between text-[#0B0F1A] bg-[#ffffff] p-3 items-center border-b border-[#E8E7E2] text-base relative ">
       <div className="font-normal ml-4 flex justify-center items-center">
         <div className="w-2.5 h-2.5 rounded-full bg-[#1A3CFF] mr-2"></div>
         <div
@@ -26,7 +26,7 @@ export default function Topbar({ firstName, initials, email, onEditProfile }) {
             navigate("/signup");
           }}
         >
-          ZePay
+          ElectronPay
         </div>
       </div>
       <div className="font-normal flex items-center">

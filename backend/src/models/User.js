@@ -8,14 +8,21 @@ const userSchema = new mongoose.Schema({
     trim: true,
     lowercase: true,
     minLength: 3,
-    maxLength: 30,
+    maxLength: 100
+  },
+  username: {
+    type: String,
+    required: true,
+    unique: true,
+    lowercase: true,
+    minlength: 3,
+    maxlength: 30,
+    match: [/^[a-zA-Z0-9_]+$/, "Username can only contain letter(s), number(s) & underscore(s)"],
   },
   password: {
     type: String,
     required: true,
-    match: [
-      /^(?=.*[a-zA-Z])(?=.*\d).{8,}$/,
-    ],
+    match: [/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&]).{8,}$/, "Password must contain letter(s), number(s), and special character(s)"],
   },
   firstName: {
     type: String,

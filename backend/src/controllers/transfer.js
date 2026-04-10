@@ -36,7 +36,7 @@ export const transfer = async (req, res)=> {
         if (!result.modifiedCount) {
             await session.abortTransaction();
             return res.status(400).json({
-                errors: {account: "Transaction failed due to insufficient balance"}
+                errors: {account: "Insufficient bank balance. Check your balance and try again."}
             });
         }
         await Account.findByIdAndUpdate(

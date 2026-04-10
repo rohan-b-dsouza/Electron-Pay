@@ -6,6 +6,7 @@ const SendMoney = lazy(() => import("./pages/SendMoney"));
 const Signup = lazy(() => import("./pages/Signup"));
 const Signin = lazy(()=> import('./pages/Signin'));
 const RootRedirect = lazy(()=> import('./pages/RootRedirect'));
+const LandingPage = lazy(()=> import('./pages/LandingPage'));
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
               <Route path="/signin" element={<Signin />}></Route>
               <Route path="/dashboard" element={<DashBoard />}></Route>
               <Route path="/send-money/:toUserId" element={<SendMoney />}></Route>
+              <Route path="/landing" element={<LandingPage/>}></Route>
             </Routes>
           </Suspense>
         </BrowserRouter>

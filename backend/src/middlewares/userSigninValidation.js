@@ -8,8 +8,8 @@ export const userSigninValidation = (req, res, next) => {
     password: zod
       .string()
       .regex(
-        /^(?=.*[a-zA-Z])(?=.*\d).{8,}$/,
-        "Must contain a mix of letters, numbers & symbols",
+        /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&]).{8,}$/,
+        "Must contain a mix of letters, numbers & symbols (min 8 chars)",
       ),
   });
   const result = userSigninSchema.safeParse(req.body);
