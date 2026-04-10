@@ -6,6 +6,9 @@ import { useNavigate } from "react-router-dom"
 import axios from "axios"
 import EditProfile from "../components/EditProfile"
 
+const BASE_URL = import.meta.env.VITE_API_URL;
+
+
 export default function DashBoard() {
     const navigate = useNavigate();
     const [firstName, setFirstName] = useState("");
@@ -26,8 +29,8 @@ export default function DashBoard() {
     const fetchData = async()=> {
         try {
             const [meRes, balanceRes] = await Promise.all([
-                axios.get('http://localhost:3000/api/v1/user/me', config),
-                axios.get('http://localhost:3000/api/v1/user/account/balance', config),
+                axios.get(`${BASE_URL}/api/v1/user/me`, config),
+                axios.get(`${BASE_URL}/api/v1/user/account/balance`, config),
             ]);
             setFirstName(meRes.data.firstName);
             setLastName(meRes.data.lastName);
@@ -56,7 +59,7 @@ export default function DashBoard() {
         }
         const fetchUsersList = async()=> {
             try {
-                const searchRes = await axios.get(`http://localhost:3000/api/v1/user/search?filter=${filter}`, config);
+                const searchRes = await axios.get(`${BASE_URL}/api/v1/user/search?filter=${filter}`, config);
                 setUsersList(searchRes.data.users);
             }
             catch(err) {

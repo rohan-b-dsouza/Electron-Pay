@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
 import { Navigate} from "react-router-dom";
 import axios from 'axios';
-import LandingPage from "./LandingPage";
+
+const BASE_URL = import.meta.env.VITE_API_URL;
+
 
 export default function RootRedirect() {
     const [loading, setLoading] = useState(true);
@@ -14,7 +16,7 @@ export default function RootRedirect() {
         }
         const authChecker = async ()=> {
             try {
-                const authCheck = await axios.get('http://localhost:3000/api/v1/user/me', {
+                const authCheck = await axios.get(`${BASE_URL}/api/v1/user/me`, {
                     headers: {
                         Authorization: `Bearer ${token}`
                     }

@@ -3,7 +3,10 @@ import InputBox from "./InputBox";
 import Button from "./Button";
 import axios from "axios";
 
+const BASE_URL = import.meta.env.VITE_API_URL;
+
 export default function EditProfile({ onClose, onEdit }) {
+
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [password, setPassword] = useState("");
@@ -13,7 +16,7 @@ export default function EditProfile({ onClose, onEdit }) {
     setLoading(true);
     try {
       const response = await axios.put(
-        "http://localhost:3000/api/v1/user/update",
+        `${BASE_URL}/api/v1/user/update`,
         {
           firstName,
           lastName,

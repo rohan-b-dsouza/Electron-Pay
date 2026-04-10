@@ -5,6 +5,8 @@ import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
+const BASE_URL = import.meta.env.VITE_API_URL;
+
 const capitalize = (s) => {
   if (!s) return "";
   const firstChar = s[0].toUpperCase();
@@ -22,7 +24,7 @@ export default function SendMoney() {
     const getUserData = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:3000/api/v1/user/${toUserId}`,
+          `${BASE_URL}/api/v1/user/${toUserId}`,
           {
             headers: {
               Authorization: `Bearer ` + localStorage.getItem("token"),
@@ -58,7 +60,7 @@ export default function SendMoney() {
     setLoading(true);
     try {
       const response = await axios.post(
-        "http://localhost:3000/api/v1/user/account/transfer",
+        `${BASE_URL}/api/v1/user/account/transfer`,
         {
           toUserId,
           amount,
