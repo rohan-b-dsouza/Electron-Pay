@@ -14,11 +14,11 @@ export default function DashBoard() {
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
     const [email, setEmail] = useState("");
-    const [balance, setBalance] = useState(0);
+    const [balance, setBalance] = useState(null);
     const [usersList, setUsersList] = useState([]);
     const [filter, setFilter] = useState("");
     const [showModal, setShowModal] = useState(false);
-
+    const [usersLoading, setUsersLoading] = useState(false);
 
     const token = localStorage.getItem("token");
     const config = {
@@ -59,6 +59,7 @@ export default function DashBoard() {
         }
         const fetchUsersList = async()=> {
             try {
+            setUsersLoading(true);
                 const searchRes = await axios.get(`${BASE_URL}/api/v1/user/search?filter=${filter}`, config);
                 setUsersList(searchRes.data.users);
             }
@@ -69,6 +70,8 @@ export default function DashBoard() {
                     navigate('/signin');
                     return;
                 }
+            } finally {
+                setUsersLoading(false);
             }
         }
         fetchUsersList();
@@ -79,8 +82,8 @@ export default function DashBoard() {
             <div className={`bg-[#F0F2F5] min-h-screen`}>
                 <Topbar firstName={firstName} initials={firstName[0]} email={email} lastName={lastName} onEditProfile={()=>setShowModal(showModal=>!showModal)}></Topbar>
                 <div className="px-10">
-                    <Balance balance={balance / 100}></Balance>
-                    <Users usersList={usersList} setFilter={setFilter}></Users>
+                    <Balance balance={balance ? balance / 100 : null}></Balance>
+                    <Users usersList={usersList} setFilter={setFilter} usersLoading={usersLoading}></Users>
                 </div>
                 {
                     showModal && (

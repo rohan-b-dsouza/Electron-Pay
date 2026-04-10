@@ -10,6 +10,7 @@ import { useNavigate } from "react-router-dom";
 const BASE_URL = import.meta.env.VITE_API_URL;
 
 export default function Signup() {
+  const [loading, setLoading] = useState(false);
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
@@ -82,10 +83,12 @@ export default function Signup() {
           ></InputBox>
         </div>
         <div className="space-y-3">
-          <Button
+          <Button loading={loading}
             content={"Create Account"}
+            loadingContent={"Creating account..."}
             onClick={async () => {
               try {
+                setLoading(true);
                 const response = await axios.post(
                   `${BASE_URL}/api/v1/user/signup`,
                   {
@@ -99,8 +102,9 @@ export default function Signup() {
                 setErrors({});
                 localStorage.setItem("token", response.data.token);
                 navigate("/dashboard");
+                setLoading(false);
               } catch (err) {
-                console.log("676767676");
+                setLoading(false);
                 const backendErrors = err.response?.data?.errors;
                 if (backendErrors) {
                   setErrors(backendErrors);
@@ -118,3 +122,4 @@ export default function Signup() {
     </div>
   );
 }
+

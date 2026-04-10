@@ -20,9 +20,12 @@ export default function SendMoney() {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [username, setUsername] = useState("");
+  const [recipientLoading, setRecipientLoading] = useState(false);
+
   useEffect(() => {
     const getUserData = async () => {
       try {
+        setRecipientLoading(true);
         const response = await axios.get(
           `${BASE_URL}/api/v1/user/${toUserId}`,
           {
@@ -41,11 +44,12 @@ export default function SendMoney() {
         if (status == 404 || status == 500) {
           navigate("/dashboard");
           return;
-        }
-        else {
+        } else {
           navigate("/signin");
           return;
         }
+      } finally {
+        setRecipientLoading(false);
       }
     };
     getUserData();
@@ -108,8 +112,13 @@ export default function SendMoney() {
               })}
             </div>
             <div className="text-[#8A8F9E]">{"Paid to"}</div>
-            <div className="">{capitalize(firstName)} {capitalize(lastName)}</div>
-            <div className="text-sm text-[#7d7d7e] break-all">User ID: {username}{"@zepay"}</div>
+            <div className="">
+              {capitalize(firstName)} {capitalize(lastName)}
+            </div>
+            <div className="text-sm text-[#7d7d7e] break-all">
+              User ID: {username}
+              {"@zepay"}
+            </div>
             <button
               className="text-sm text-[#ffffff] bg-[#1A3CFF] font-semibold py-3.5 rounded-md w-full cursor-pointer hover:bg-[#0A1FA8]"
               onClick={() => navigate("/dashboard", { replace: true })}
@@ -139,17 +148,31 @@ export default function SendMoney() {
               </svg>
               <div className="text-[#8A8F9E] text-sm pl-2">Send Money</div>
             </div>
-            <div className="flex items-center py-7 px-7">
-              <div className="rounded-full text-white bg-[#1A3CFF] w-10 h-10 flex justify-center items-center ml-2 mr-4 ">
-                <div>{capitalize(firstName)[0]}</div>
-              </div>
-              <div className="font-medium text-lg text-[#0B0F1A]">
-                {capitalize(firstName)} {capitalize(lastName)}
-                <div className="text-sm text-[#8A8F9E] font-normal">
-                  Recipient
+            {recipientLoading ? (
+              <div className="flex items-center py-7 px-7 animate-pulse">
+                <div className="rounded-full text-white bg-gray-200 w-10 h-10 flex justify-center items-center ml-2 mr-4 "></div>
+                <div className="flex flex-col space-y-1">
+                  <div className="bg-gray-200 w-24 h-5 rounded">
+                  </div>
+                  <div className="bg-gray-200 w-24 h-5 rounded">
+                  </div>
                 </div>
               </div>
-            </div>
+            ) : (
+              <div className="flex items-center py-7 px-7">
+                <div className="rounded-full text-white bg-[#1A3CFF] w-10 h-10 flex justify-center items-center ml-2 mr-4 ">
+                  <div>{capitalize(firstName)[0]}</div>
+                </div>
+                <div className="flex flex-col">
+                  <div className="font-medium text-lg text-[#0B0F1A]">
+                    {capitalize(firstName)} {capitalize(lastName)}
+                  </div>
+                  <div className="text-sm text-[#8A8F9E] font-normal">
+                    Recipient
+                  </div>
+                </div>
+              </div>
+            )}
 
             <div className="py-7 px-9 space-y-5">
               <InputBox
@@ -163,9 +186,7 @@ export default function SendMoney() {
                 error={errors.amount}
               ></InputBox>
               {errors.account && (
-                <p className="text-[#CF1C1C] text-xs">
-                  {errors.account}
-                </p>
+                <p className="text-[#CF1C1C] text-xs">{errors.account}</p>
               )}
               <button
                 className={`font-bold shadow-sm rounded-sm pl-2 pr-2 pt-3 pb-3 w-full mt-3 text-[#ffffff] cursor-pointer ${loading ? "bg-[#0A1FA8] cursor-not-allowed" : "bg-[#1A3CFF] hover:bg-[#0A1FA8]"}`}

@@ -9,7 +9,7 @@ export default function Topbar({ firstName, initials, email, onEditProfile }) {
   const navigate = useNavigate();
   const name = capitalize(firstName);
   const [dropdown, setDropdown] = useState(false);
-
+  const isLoading = !firstName;
   const handleSignout = () => {
     localStorage.removeItem("token");
     navigate("/signin");
@@ -31,14 +31,27 @@ export default function Topbar({ firstName, initials, email, onEditProfile }) {
       </div>
       <div className="font-normal flex items-center">
         <div className="font-medium">
-          <span className="text-[#8A8F9E] font-normal">Welcome,</span> {name}
+          <span className="text-[#8A8F9E] font-normal">Welcome,</span> {isLoading ? (
+            <div className="h-4 w-24 bg-gray-200 rounded animate-pulse"></div>
+          ) : (
+            name
+          )}
         </div>
-        <div
-          className="rounded-full text-white bg-[#1A3CFF] w-10 h-10 flex justify-center items-center ml-2 mr-4 cursor-pointer"
-          onClick={() => setDropdown((dropdown) => !dropdown)}
-        >
-          <div>{name[0]}</div>
-        </div>
+        {
+          isLoading ? (
+            <div
+              className="rounded-full text-white bg-gray-200 w-10 h-10 flex justify-center items-center ml-2 mr-4 cursor-pointer"
+            >
+            </div>
+          ) : (
+            <div
+              className="rounded-full text-white bg-[#1A3CFF] w-10 h-10 flex justify-center items-center ml-2 mr-4 cursor-pointer"
+              onClick={() => setDropdown((dropdown) => !dropdown)}
+            >
+              <div>{name[0]}</div>
+            </div>
+          )
+        }
 
         {dropdown && (
           <div className="absolute  top-16.5 bg-[#ffffff] divide-y divide-gray-200 shadow-sm right-15 rounded-md max-w-md flex flex-col">

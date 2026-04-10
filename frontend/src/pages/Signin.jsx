@@ -14,6 +14,8 @@ export default function Signin() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState({});
+  const [loading, setLoading] = useState(false);
+
   return (
     <div className="flex justify-center items-center h-screen bg-[#F0F2F5] px-5">
       <div className="flex flex-col justify-center w-full max-w-md rounded-md p-9 space-y-7 bg-[#FFFFFF] shadow-sm">
@@ -49,9 +51,12 @@ export default function Signin() {
         </div>
         <div className="space-y-4">
           <Button
-            content={"Login"}
+            content={"Log in"}
+            loading={loading}
+            loadingContent={"Signing in..."}
             onClick={async () => {
               try {
+                setLoading(true);
                 const response = await axios.post(
                   `${BASE_URL}/api/v1/user/signin`,
                   {
@@ -62,7 +67,9 @@ export default function Signin() {
                 setErrors({});
                 localStorage.setItem("token", response.data.token);
                 navigate("/dashboard");
+                setLoading(false);
               } catch (err) {
+                setLoading(false);
                 const backendErrors = err.response?.data?.errors;
                 if (backendErrors) {
                   setErrors(backendErrors);
