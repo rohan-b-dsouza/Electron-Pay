@@ -56,16 +56,26 @@ export function Users({ usersList, setFilter, usersLoading }) {
                         <div>{capitalize(user.firstName)[0]}</div>
                       </div>
                       <div>
-                        <div>{capitalize(user.firstName)}</div>
+                        <div>
+                          {capitalize(user.firstName)}{" "}
+                          {capitalize(user.lastName)}
+                        </div>
                         <div className="text-xs sm:text-sm text-[#8A8F9E] break-all">
                           {user.username}
                           {"@electronpay"}
                         </div>
+                        <div className="sm:hidden">
+                          <SendMoneyButton
+                            onClick={() => navigate(`/send-money/${user._id}`)}
+                          />
+                        </div>
                       </div>
                     </div>
-                    <SendMoneyButton
-                      onClick={() => navigate(`/send-money/${user._id}`)}
-                    ></SendMoneyButton>
+                    <div className="hidden sm:block">
+                      <SendMoneyButton
+                        onClick={() => navigate(`/send-money/${user._id}`)}
+                      />
+                    </div>
                   </div>
                 </div>
               );
