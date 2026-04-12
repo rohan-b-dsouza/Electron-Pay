@@ -22,7 +22,7 @@ export default function Signup() {
     <div className="flex justify-center items-center min-h-screen bg-[#F0F2F5] px-5">
       <div className="flex flex-col justify-center w-full sm:max-w-md rounded-md p-6 sm:p-9 space-y-5 bg-[#FFFFFF] shadow-sm">
         <div className="flex flex-col items-center justify-center space-y-2">
-          <Heading heading={"Sign Up"}></Heading>
+          <Heading heading={"Sign up"}></Heading>
           <SubHeading
             subheading={"Create your account to get started"}
           ></SubHeading>
