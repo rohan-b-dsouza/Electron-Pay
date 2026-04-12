@@ -117,7 +117,7 @@ export default function SendMoney() {
             </div>
             <div className="text-sm text-[#7d7d7e] break-all">
               User ID: {username}
-              {"@zepay"}
+              {"@electronpay"}
             </div>
             <button
               className="text-sm text-[#ffffff] bg-[#1A3CFF] font-semibold py-3.5 rounded-md w-full cursor-pointer hover:bg-[#0A1FA8]"
