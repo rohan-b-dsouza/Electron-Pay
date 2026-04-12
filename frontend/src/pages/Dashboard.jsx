@@ -15,10 +15,7 @@ export default function DashBoard() {
     const [lastName, setLastName] = useState("");
     const [email, setEmail] = useState("");
     const [balance, setBalance] = useState(null);
-    const [usersList, setUsersList] = useState([]);
-    const [filter, setFilter] = useState("");
     const [showModal, setShowModal] = useState(false);
-    const [usersLoading, setUsersLoading] = useState(false);
 
     const token = localStorage.getItem("token");
     const config = {
@@ -50,40 +47,13 @@ export default function DashBoard() {
     useEffect(()=> {
         fetchData();
     }, []);
-    useEffect(()=> {
-        const token = localStorage.getItem("token");
-        const config = {
-            headers: {
-                Authorization: `Bearer ${token}`
-            }
-        }
-        const fetchUsersList = async()=> {
-            try {
-            setUsersLoading(true);
-                const searchRes = await axios.get(`${BASE_URL}/api/v1/user/search?filter=${filter}`, config);
-                setUsersList(searchRes.data.users);
-            }
-            catch(err) {
-                const status = err.response?.status;
-                if (err.response?.status == 401 || err.response?.status == 404) {
-                    localStorage.removeItem("token");
-                    navigate('/signin');
-                    return;
-                }
-            } finally {
-                setUsersLoading(false);
-            }
-        }
-        fetchUsersList();
-
-    }, [filter]);
     return (
         <>
             <div className={`bg-[#F0F2F5] min-h-screen`}>
                 <Topbar firstName={firstName} initials={firstName[0]} email={email} lastName={lastName} onEditProfile={()=>setShowModal(showModal=>!showModal)}></Topbar>
                 <div className="px-10">
-                    <Balance balance={balance ? balance / 100 : null}></Balance>
-                    <Users usersList={usersList} setFilter={setFilter} usersLoading={usersLoading}></Users>
+                    <Balance balance={balance >=0 ? balance / 100 : null}></Balance>
+                    <Users></Users>
                 </div>
                 {
                     showModal && (
