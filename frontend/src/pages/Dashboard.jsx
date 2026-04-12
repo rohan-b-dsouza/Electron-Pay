@@ -52,7 +52,7 @@ export default function DashBoard() {
             <div className={`bg-[#F0F2F5] min-h-screen`}>
                 <Topbar firstName={firstName} initials={firstName[0]} email={email} lastName={lastName} onEditProfile={()=>setShowModal(showModal=>!showModal)}></Topbar>
                 <div className="px-10">
-                    <Balance balance={balance >=0 ? balance / 100 : null}></Balance>
+                    <Balance balance={balance != null ? balance / 100 : null}></Balance>
                     <Users></Users>
                 </div>
                 {
